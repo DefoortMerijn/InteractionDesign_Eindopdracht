@@ -55,7 +55,9 @@ const showPokémonImage = function (jsonObject) {
   const name = jsonObject.name.charAt(0).toUpperCase() + jsonObject.name.slice(1);
   const pokéimage = jsonObject.sprites.versions['generation-vii']['ultra-sun-ultra-moon']['front_default'];
   let image = `<p>${name}</p><div class="js-pokémon c-pokémonimg"><img class="c-pokésprite"src="${pokéimage}" alt=""></img>`;
+
   pokémonImage.innerHTML = image;
+  gsap.fromTo('.c-pokésprite', { scale: 2 }, { scale: 1, ease: Elastic.easeOut, duration: 0.1 });
   let htmltypes = '';
   for (const type of jsonObject.types) {
     htmltypes += `<li class="c-type-${type.type.name} c-type">${type.type.name}</li>`;
