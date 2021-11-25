@@ -8,6 +8,9 @@
 
 :root {
   /* Global colors */
+  --global-color-highlight: #fed049;
+  --global-background-Color: #293b5f;
+
   --global-color-alpha-light: #4f95ff;
   --global-color-alpha: #3385ff;
   --global-color-alpha-dark: #2e77e6;
@@ -27,10 +30,9 @@
   --global-color-neutral-xxx-dark: #35374d;
   --global-color-neutral-xxxx-dark: #20223a;
 
+  --global-font-color: white;
   --global-color-error: red;
   --global-input-error-borderColor: red;
-
-  --global-background-Color: red;
 
   /* global page settings */
   --global-html-color: var(--global-color-neutral-xxxx-dark);
@@ -78,7 +80,7 @@
 
 html {
   background-color: var(--global-background-Color);
-  color: var(--global-html-color);
+  color: var(--global-font-color);
   font-size: 16px;
   line-height: 1.5;
   font-family: 'Inter Web', Helvetica, arial, sans-serif;
@@ -121,12 +123,14 @@ Elements: Images
 ---
 Default markup for images to make them responsive
 */
-
 img {
   max-width: 100%;
   vertical-align: top;
 }
 
+body {
+  /* overflow-x: hidden; */
+}
 /*
     Elements: typography
     ---
@@ -149,12 +153,13 @@ h1 {
 h2 {
   font-size: 32px;
   line-height: 40px;
-  margin: 0 0 var(--global-whitespace);
+  margin: 0;
 }
 
 h3 {
   font-size: 26px;
   line-height: 32px;
+  margin: 0;
   /* margin: 0 0 var(--global-whitespace); */
 }
 
@@ -536,90 +541,6 @@ details[open] summary ~ * {
 \*------------------------------------*/
 
 /*
-    Component: Logo
-    ---
-    Website main logo
-*/
-
-.c-logo {
-  --logo__path--1--Fill: var(--global-color-neutral-xxxx-dark);
-  --logo__path--2--Fill: var(--global-color-alpha);
-  --logo__path--3--Fill: var(--global-color-alpha-x-dark);
-  height: var(--global-whitespace);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: var(--global-whitespace-xl);
-}
-
-.c-logo__symbol {
-  height: 100%;
-}
-
-.c-logo__path--1 {
-  fill: var(--logo__path--1--Fill);
-}
-
-.c-logo__path--2 {
-  fill: var(--logo__path--2--Fill);
-}
-
-.c-logo__path--3 {
-  fill: var(--logo__path--3--Fill);
-}
-
-/*
-    Component: Card
-    ---
-    Card with box shadow
-*/
-
-.c-card {
-  border: 1px solid lightgray;
-  --card-backgroundColor: rgba(126, 227, 252, 0.85);
-  --card__footer-borderColor: var(--global-color-neutral-xxx-light);
-  --card-borderRadius: var(--global-borderRadius);
-  background-color: var(--card-backgroundColor);
-
-  border-radius: var(--card-borderRadius);
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05), 0 2px 4px rgba(0, 0, 0, 0.075);
-  /* overflow: hidden; */
-  margin: 0 auto;
-  width: 60vw;
-}
-
-/* Add padding to child for more flexibility */
-.c-card__body,
-.c-card__footer {
-  margin: 0 auto;
-  width: 80%;
-  padding: var(--global-whitespace) var(--global-whitespace) 0;
-  overflow: auto; /* Fix margin collapse */
-}
-
-.c-card__footer {
-  text-align: center;
-  border-top: 1px solid var(--card__footer-borderColor);
-}
-
-.c-card__title {
-  text-align: center;
-  font-size: 18px;
-  line-height: var(--global-whitespace);
-  font-weight: 600;
-}
-
-@media (min-width: 27em) {
-  .c-card__body {
-    padding: var(--global-whitespace-xl) var(--global-whitespace-xl) var(--global-whitespace);
-  }
-
-  .c-card__title {
-    margin-bottom: var(--global-whitespace-xl);
-  }
-}
-
-/*
     Component: Forms
     ---
     Everything form related here
@@ -649,7 +570,7 @@ details[open] summary ~ * {
   width: 100%;
   border: var(--global-borderWidth) solid var(--input-borderColor, var(--global-input-borderColor));
   /* border: 1px solid var(--global-color-neutral-xxx-light); */
-  border-radius: var(--global-borderRadius);
+  border-radius: 100px;
   background-color: var(--global-input-backgroundColor);
   color: var(--global-input-color), var(--global-color-neutral-xx-dark);
   font-family: inherit;
@@ -859,11 +780,11 @@ more padding on the right to avoid overlap
 .c-custom-select {
   display: block;
   position: relative;
+  width: 100%;
 }
 
 .c-custom-select__input {
   font-weight: bold;
-  width: 30vh;
 }
 /*
     Component: Password Toggle
@@ -883,9 +804,10 @@ more padding on the right to avoid overlap
 */
 
 .c-background {
-  background-image: url('/Images/pokédex_design_S&S.jpg');
+  background-image: url('/Images/OldSchoolPokémonBG.png');
   background-color: var(--global-background-Color);
   display: flex;
+
   justify-content: center;
   align-items: center;
   background-size: contain;
@@ -909,55 +831,284 @@ more padding on the right to avoid overlap
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  position: relative;
   background-color: #cccccc;
   border-radius: 20px;
-
   border: 1px solid black;
+  /* box-shadow: 0 5px 5px 2px rgba(0, 0, 0, 0.4); */
   margin: 0 auto;
   width: 300px;
   height: 300px;
-  text-align: center;
-  font-size: 24px;
-  font-weight: bold;
+
   margin-bottom: var(--global-whitespace-lg);
 }
-.c-movelist {
+/* .c-movelist {
   display: flex;
-  justify-content: space-evenly;
   align-items: center;
   flex-direction: column;
-}
-.c-movelist__dropdown {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.c-movelist__dropdown summary {
-  width: 70%;
-  margin: 0 auto;
-}
+} */
 
-.c-move {
+/* .c-move {
   display: flex;
   justify-content: space-between;
   border: 1px solid black;
   padding: 6px;
-  width: 80%;
   background-color: white;
   margin: 0 auto;
 }
-
-.c-move p {
-  gap: 32px;
-  width: 105px;
+td {
+  border: 1px solid black;
+  width: px;
+} */
+td {
+  background-color: white;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 5px 5px 2px rgba(0, 0, 0, 0.4);
 }
-.c-move .c-move--learnmethod {
-  width: 120px;
+
+th {
+  text-align: center;
+  border-radius: 20px;
+  background-color: var(--global-color-highlight);
+  box-shadow: 0 5px 5px 2px rgba(0, 0, 0, 0.4);
 }
 
+table {
+  width: 90%;
+  background-color: var(--global-background-Color);
+  border: 5px solid var(--global-background-Color);
+  border-radius: 20px;
+  box-shadow: 0 5px 10px 5px rgba(0, 0, 0, 0.4);
+}
+
+.c-title {
+  margin: 2rem auto;
+  padding: 1rem 0;
+  text-align: center;
+  font-size: 3rem;
+}
 .c-select {
   margin-bottom: var(--global-whitespace);
+}
+
+.c-grid {
+  display: grid;
+  grid-template-columns: 43rem 43rem;
+  grid-row: repeat(auto-fill, [row] auto);
+  justify-content: center;
+  align-items: center;
+  grid-gap: 25px;
+  /* grid-row-gap: 25px; */
+}
+
+@media (max-width: 1350px) {
+  .c-grid {
+    grid-template-columns: 650px;
+  }
+}
+
+.c-grid__item {
+  background-color: white;
+  border-radius: 5px;
+  justify-self: center;
+  align-self: flex-start;
+  font-size: 30px;
+  text-align: center;
+  width: 43rem;
+  min-height: 35rem;
+  height: auto;
+  color: #000;
+  box-shadow: 0 5px 10px 5px rgba(0, 0, 0, 0.4);
+  margin: 0;
+}
+
+.c-grid__item-long {
+  background-color: white;
+  border-radius: 5px;
+  font-size: 30px;
+  margin: 0;
+  width: 43rem;
+  justify-self: center;
+  height: auto;
+  box-shadow: 0 5px 10px 5px rgba(0, 0, 0, 0.4);
+
+  color: #000;
+}
+
+.c-grid__content {
+  padding: var(--global-whitespace-lg);
+}
+
+.c-page {
+  padding: 7% 0;
+  margin-top: 10%;
+  width: 100vw;
+}
+
+.c-learnset {
+  font-size: 16px;
+  text-align: left;
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.c-maintitle {
+  font-size: 5rem;
+  margin-bottom: 48px;
+  line-height: 82px;
+  font-family: 'Pokemon Hollow', sans-serif;
+}
+.c-totstats {
+  background-color: var(--global-background-Color);
+  width: 100%;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--global-font-color);
+}
+
+.c-special {
+  background-color: #007580;
+  color: white;
+}
+
+.c-physical {
+  background-color: #c92112ed;
+  color: white;
+}
+
+.c-status {
+  background-color: grey;
+  color: white;
+}
+
+/*
+  Component: Types
+  A component that gives types a color
+*/
+.c-types {
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+  align-items: center;
+}
+
+.c-type {
+  width: 20vw;
+  border-radius: 20px;
+  font-size: 24px;
+}
+
+.c-type-fire {
+  background-color: #f08030;
+  color: var(--global-font-color);
+}
+.c-type-water {
+  background-color: #6890f0;
+  color: var(--global-font-color);
+}
+.c-type-grass {
+  background-color: #78c850;
+  color: var(--global-font-color);
+}
+.c-type-electric {
+  background-color: #f8d030;
+  color: var(--global-font-color);
+}
+.c-type-poison {
+  background-color: #a040a0;
+  color: var(--global-font-color);
+}
+.c-type-flying {
+  background-color: #a890f0;
+  color: var(--global-font-color);
+}
+.c-type-fighting {
+  background-color: #c03028;
+  color: var(--global-font-color);
+}
+.c-type-steel {
+  background-color: #b8b8d0;
+  color: var(--global-font-color);
+}
+.c-type-fairy {
+  background-color: #ee99ac;
+  color: var(--global-font-color);
+}
+.c-type-psychic {
+  background-color: #f85888;
+  color: var(--global-font-color);
+}
+.c-type-dark {
+  background-color: #705848;
+  color: var(--global-font-color);
+}
+.c-type-ghost {
+  background-color: #705898;
+  color: var(--global-font-color);
+}
+.c-type-ice {
+  background-color: #98d8d8;
+  color: var(--global-font-color);
+}
+.c-type-dragon {
+  background-color: #7038f8;
+  color: var(--global-font-color);
+}
+.c-type-ground {
+  background-color: #e0c068;
+  color: var(--global-font-color);
+}
+.c-type-rock {
+  background-color: #b8a038;
+  color: var(--global-font-color);
+}
+.c-type-normal {
+  background-color: #a8a878;
+  color: var(--global-font-color);
+}
+.c-type-bug {
+  background-color: #a8b820;
+  color: var(--global-font-color);
+}
+
+/* .c-loading {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #d8ebe4;
+} */
+.c-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 24px;
+}
+.c-disepear {
+  visibility: hidden;
+}
+
+.c-back {
+  fill: var(--global-color-highlight);
+  background-color: var(--global-background-Color);
+  border-radius: 50%;
+  width: 40px;
+  height: auto;
+}
+
+.c-next {
+  fill: var(--global-color-highlight);
+  background-color: var(--global-background-Color);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
 }
 /*------------------------------------*\
 #UTILITIES
