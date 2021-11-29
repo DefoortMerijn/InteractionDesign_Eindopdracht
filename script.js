@@ -1,4 +1,4 @@
-let pokémonImage, movelistlvl, movelistegg, movelisttutor, movelisttm, totBaseStats, PokémonList, PokémonType, NextPokémon, PreviousPokémon;
+let pokémonSprite, movelistlvl, movelistegg, movelisttutor, movelisttm, totBaseStats, PokémonList, PokémonType, NextPokémon, PreviousPokémon, ShinyToggle;
 let chart;
 let number;
 
@@ -18,10 +18,12 @@ const getPokémon = async (pokemon) => {
   await fetch(endpoint) // Met de fetch API proberen we de data op te halen.
     .then((response) => response.json())
     .then((data) => {
-      ShowEggMoves(data), ShowTutorMoves(data), ShowLvlMoves(data), ShowTmMoves(data), showPokémonImage(data), showPokémonStats(data);
+      ShowEggMoves(data), ShowTutorMoves(data), ShowLvlMoves(data), ShowTmMoves(data), showPokémon(data), showPokémonStats(data);
     });
 };
-const showPokémonImage = function (jsonObject) {
+const showPokémon = function (jsonObject) {
+  const pokéimage = jsonObject.sprites.versions['generation-vii']['ultra-sun-ultra-moon']['front_default'];
+
   if (number > 1) {
     PreviousPokémon.classList.remove('c-disepear');
   }
@@ -34,17 +36,66 @@ const showPokémonImage = function (jsonObject) {
     arr[i] = arr[i].charAt(0).toUpperCase() + arr[i].slice(1);
   }
   const name = jsonObject.name.charAt(0).toUpperCase() + jsonObject.name.slice(1);
-  const pokéimage = jsonObject.sprites.versions['generation-vii']['ultra-sun-ultra-moon']['front_default'];
-  let image = `<p>${name}</p><div class="js-pokémon c-pokémonimg"><img class="c-pokésprite"src="${pokéimage}" alt=""></img>`;
 
-  pokémonImage.innerHTML = image;
+  let info = `<div class="c-name"><p>${name}</p>                                
+  <input class="o-hide-accessible c-option c-option--hidden js-shinyToggle" type="checkbox"
+  id="checkbox1">
+<label class="c-label c-label--option c-custom-option" for="checkbox1">
+  <span>
+  <svg class="js-shiny c-shiny" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <g class="c-shinySparkle js-shinySparkle">
+    <path d="M97.11,62c0,1-.82,1.44-1.62,1.71-2,.68-4,1.29-6,1.93a37.5,37.5,0,0,0-20.42,16,53.44,53.44,0,0,0-5.79,13.6,11.44,11.44,0,0,1-.92,2.49,1.44,1.44,0,0,1-1.33.85,1.29,1.29,0,0,1-1.14-1c-.71-2.1-1.5-4.18-2.13-6.31C54.84,81.47,49.26,73.94,40.19,69a83.43,83.43,0,0,0-13.06-5.78c-1-.33-1.73-.89-1.69-2s1-1.36,1.85-1.6c3.67-1,7.48-1.45,11-3.2A33,33,0,0,0,53.82,39.93a110.23,110.23,0,0,0,5-13.95c.34-1.1.57-2.45,2-2.52s2.12,1.18,2.5,2.33c1,2.84,1.83,5.71,2.6,8.6C68,42.14,71.82,48.74,78.39,53.54c3.17,2.33,6.94,3.44,10.48,5a37,37,0,0,0,6.55,1.92C96.28,60.7,97,61,97.11,62Z"/>
+    <path d="M80.47,101.4a2.5,2.5,0,0,1,2.12,1.89A76,76,0,0,1,85.28,112c1.75,6.43,4.52,12.28,9.49,16.91a24.3,24.3,0,0,0,7.56,5.06c4.12,1.63,8.1,3.68,12.54,4.41.8.13,1.54.48,1.62,1.41a1.69,1.69,0,0,1-1.32,1.73c-2.09.74-4.22,1.34-6.32,2.07a37.71,37.71,0,0,0-22.52,20,60.18,60.18,0,0,0-4,10.77,5.73,5.73,0,0,1-.59,1.37,1.34,1.34,0,0,1-1.34.81,1.36,1.36,0,0,1-1.14-1.08c-.75-2.21-1.58-4.39-2.22-6.63a35.24,35.24,0,0,0-15-20.49,62.93,62.93,0,0,0-15-7,7.33,7.33,0,0,1-1.23-.49,1.67,1.67,0,0,1-.9-1.66,1.45,1.45,0,0,1,1.22-1.39c1.56-.4,3.12-.83,4.7-1.15,9.38-1.87,16.13-7.32,20.77-15.5a73.53,73.53,0,0,0,6.59-17C78.51,102.82,78.83,101.53,80.47,101.4Z"/>
+    <path d="M138.51,61.94a2.37,2.37,0,0,1,2.05,1.58A38.92,38.92,0,0,1,142.67,70a68.37,68.37,0,0,0,3.23,9.62,29.55,29.55,0,0,0,17.32,16.07c3.18,1.16,6.26,2.57,9.61,3.21.85.16,1.68.44,1.73,1.48a1.83,1.83,0,0,1-1.46,1.81c-2,.71-4.13,1.29-6.18,2a37.65,37.65,0,0,0-23.26,21.66,57.55,57.55,0,0,0-3.14,8.95,5,5,0,0,1-.43,1.08c-.33.64-.69,1.33-1.59,1.22s-1-.79-1.2-1.43c-1.45-4.13-2.47-8.41-4.46-12.35a35.2,35.2,0,0,0-14.54-15.55,85.52,85.52,0,0,0-13.8-6.15c-.9-.3-1.61-.86-1.51-1.93s.79-1.36,1.69-1.54c1.36-.27,2.7-.67,4.06-.94,10.28-2.11,17.31-8.26,22-17.47a85.18,85.18,0,0,0,5.68-15.45C136.7,63.11,137.12,62,138.51,61.94Z"/>
+  </g>
+  </svg>
+  </span>             
+</div>
+<div class=" c-pokémonimg " id="image"><img class="c-pokésprite js-pokémonsprite " id ="sprite" src="${pokéimage}" alt=""></div>`;
+  Pokémon.innerHTML = info;
+  gsap.fromTo('.c-pokésprite', { scale: 0.7 }, { scale: 1, ease: Elastic.easeOut, duration: 1 });
+
+  ListenToClickShiny(jsonObject);
 
   let htmltypes = '';
   for (const type of jsonObject.types) {
     htmltypes += `<li class="c-type-${type.type.name} c-type">${type.type.name}</li>`;
     PokémonType.innerHTML = htmltypes;
   }
-  gsap.fromTo('.c-pokésprite', { scale: 0 }, { scale: 1, ease: Elastic.easeOut, duration: 1 });
+};
+
+const ListenToClickShiny = function (info) {
+  console.log(pokémonSprite);
+  let pokéimage = info.sprites.versions['generation-vii']['ultra-sun-ultra-moon']['front_default'];
+  let pokéimageshiny = info.sprites.versions['generation-vii']['ultra-sun-ultra-moon']['front_shiny'];
+  let checkbox = document.getElementById('checkbox1');
+  let sprite = document.getElementById('sprite');
+  document.querySelector('.js-shiny').addEventListener('click', function () {
+    if (checkbox.checked == true) {
+      gsap.fromTo('.c-shiny', { scale: 0 }, { scale: 1, ease: Elastic.easeOut, duration: 1 });
+      let tl = gsap.timeline({
+        repeat: 1,
+        yoyo: true,
+      });
+      tl.fromTo('.c-pokésprite', { y: 0 }, { y: -30, ease: 'Power2.easeOut', duration: 0.5 }, '<');
+
+      sprite.src = pokéimage;
+      console.log('not checked');
+      console.log(sprite.src);
+    } else {
+      gsap.fromTo('.c-shiny', { scale: 0 }, { scale: 1, ease: Elastic.easeOut, duration: 1 });
+      let tl = gsap.timeline({
+        repeat: 1,
+
+        yoyo: true,
+      });
+      tl.fromTo('.c-pokésprite', { y: 0 }, { y: -30, ease: 'Power2.easeOut', duration: 0.5 }, '<');
+
+      sprite.src = pokéimageshiny;
+      console.log('checked');
+      console.log(sprite.src);
+    }
+  });
 };
 
 const showPokémonStats = function (jsonObject) {
@@ -420,7 +471,7 @@ const ListenToClickNav = function () {
     console.log('Current Index Number:' + PokémonList.selectedIndex);
     getPokémon(number);
 
-    gsap.fromTo('.c-next', { scale: 0.7 }, { scale: 1, ease: Elastic.easeOut, duration: 2 });
+    gsap.fromTo('.c-next', { scale: 0.7 }, { scale: 1, ease: Elastic.easeOut, duration: 1.5 });
   });
   PreviousPokémon.addEventListener('click', function () {
     if (number > 1) {
@@ -429,14 +480,15 @@ const ListenToClickNav = function () {
       PokémonList.selectedIndex--;
       console.log('Current Index Number:' + PokémonList.selectedIndex);
     }
-    gsap.fromTo('.c-back', { scale: 0.7 }, { scale: 1, ease: Elastic.easeOut, duration: 2 });
+    gsap.fromTo('.c-back', { scale: 0.7 }, { scale: 1, ease: Elastic.easeOut, duration: 1.5 });
 
     getPokémon(number);
   });
 };
 
 const init = function () {
-  pokémonImage = document.querySelector('.js-pokémon');
+  Pokémon = document.querySelector('.js-pokémon');
+  pokémonSprite = document.querySelector('.js-pokémonsprite');
   movelistlvl = document.querySelector('.js-movelistlevel');
   movelistegg = document.querySelector('.js-movelistegg');
   movelisttutor = document.querySelector('.js-movelisttutor');
@@ -446,6 +498,7 @@ const init = function () {
   PokémonType = document.querySelector('.js-types');
   NextPokémon = document.querySelector('.js-next');
   PreviousPokémon = document.querySelector('.js-back');
+  ShinyToggle = document.querySelector('.js-shinyToggle');
   ListenToClickNav();
   getPokémon(1);
   SelectPokémon();
