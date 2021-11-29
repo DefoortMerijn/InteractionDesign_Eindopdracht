@@ -1,8 +1,6 @@
 let pokémonImage, movelistlvl, movelistegg, movelisttutor, movelisttm, totBaseStats, PokémonList, PokémonType, NextPokémon, PreviousPokémon;
+let chart;
 let number;
-let physicalClass = 'c-physical';
-let specialClass = 'c-special';
-let statusClass = 'c-status';
 
 const getAllPokémon = async () => {
   // Eerst bouwen we onze url op;
@@ -19,27 +17,10 @@ const getPokémon = async (pokemon) => {
   const endpoint = `https://pokeapi.co/api/v2/pokemon/${pokemon}`;
   await fetch(endpoint) // Met de fetch API proberen we de data op te halen.
     .then((response) => response.json())
-    .then((data) => showPokémonImage(data));
+    .then((data) => {
+      ShowEggMoves(data), ShowTutorMoves(data), ShowLvlMoves(data), ShowTmMoves(data), showPokémonImage(data), showPokémonStats(data);
+    });
 };
-
-const getMoves = async (pokemon) => {
-  // Eerst bouwen we onze url op;
-  const endpoint = `https://pokeapi.co/api/v2/pokemon/${pokemon}`;
-  await fetch(endpoint) // Met de fetch API proberen we de data op te halen.
-    .then((response) => response.json())
-    .then((data) => showPokémonMoves(data));
-  console.log('Sending data');
-};
-
-const getStats = async (pokemon) => {
-  // Eerst bouwen we onze url op;
-  const endpoint = `https://pokeapi.co/api/v2/pokemon/${pokemon}`;
-  await fetch(endpoint) // Met de fetch API proberen we de data op te halen.
-    .then((response) => response.json())
-    .then((data) => showPokémonStats(data));
-  console.log('Sending data');
-};
-
 const showPokémonImage = function (jsonObject) {
   if (number > 1) {
     PreviousPokémon.classList.remove('c-disepear');
@@ -57,12 +38,13 @@ const showPokémonImage = function (jsonObject) {
   let image = `<p>${name}</p><div class="js-pokémon c-pokémonimg"><img class="c-pokésprite"src="${pokéimage}" alt=""></img>`;
 
   pokémonImage.innerHTML = image;
-  gsap.fromTo('.c-pokésprite', { scale: 2 }, { scale: 1, ease: Elastic.easeOut, duration: 0.1 });
+
   let htmltypes = '';
   for (const type of jsonObject.types) {
     htmltypes += `<li class="c-type-${type.type.name} c-type">${type.type.name}</li>`;
     PokémonType.innerHTML = htmltypes;
   }
+  gsap.fromTo('.c-pokésprite', { scale: 0 }, { scale: 1, ease: Elastic.easeOut, duration: 1 });
 };
 
 const showPokémonStats = function (jsonObject) {
@@ -208,13 +190,169 @@ const showPokémonList = function (data) {
 
   PokémonList.innerHTML = htmlList;
 };
-const showPokémonMoves = async function (Jsonmoves) {
-  // console.log(method);
-  console.log('Loading moves');
-  let htmlmovelvl = `<tr><th>Level</th><th>Move</th><th>Type</th><th>Cat.</th><th>Pwr.</th><th>Acc.</th><th>PP</th></tr>`;
+
+const ShowEggMoves = async function (Jsonmoves) {
   let htmlmoveegg = '<tr><th>Move</th><th>Type</th><th>Cat.</th><th>Pwr.</th><th>Acc.</th><th>PP</th></tr>';
-  let htmlmovetutor = '<tr><th>Move</th><th>Type</th><th>Cat.</th><th>Pwr.</th><th>Acc.</th><th>PP</th></tr>';
+
+  const pokeData = Jsonmoves;
+  // filter out moves that aren't in ultra-sun/ultra-moon
+  pokeData['moves'] = pokeData['moves'].filter((x) => x['version_group_details'].at(-1)['version_group']['name'] === 'ultra-sun-ultra-moon');
+  // sort moves based on level_learned_at (or first if egg)
+  pokeData['moves'] = pokeData['moves'].sort((a, b) => {
+    let x = a['version_group_details'].at(-1); // select lastest version of move (ultra-sun/ultra-moon)
+    let y = b['version_group_details'].at(-1);
+    return x['move_learn_method']['name'] == 'egg' ? -1 : x['level_learned_at'] - y['level_learned_at'];
+  });
+
+  for (const move of pokeData.moves) {
+    const MoveInfoUrl = `https://pokeapi.co/api/v2/move/${move.move.name}`;
+    const responsemoveinfo = await fetch(MoveInfoUrl); // Met de fetch API proberen we de data op te halen.
+    var moveinfo = await responsemoveinfo.json();
+    // get latest version of move (ultra-sun/ultra-moon)
+    let x = move['version_group_details'].at(-1);
+    if (x.move_learn_method.name == 'egg') {
+      htmlmoveegg += `<tr class="c-move">
+                  <td class="c-move-name">${move.move.name}</td>
+                  <td class="c-type-${moveinfo.type.name}">${moveinfo.type.name}</td>
+                  <td class="js-damageClass c-${moveinfo.damage_class.name}">${moveinfo.damage_class.name}</td>
+                  `;
+      if (moveinfo.power != null) {
+        htmlmoveegg += ` <td>${moveinfo.power}</td>`;
+      } else htmlmoveegg += ` <td> -- </td>`;
+      if (moveinfo.accuracy != null) {
+        htmlmoveegg += ` <td>${moveinfo.accuracy}%</td>`;
+      } else htmlmoveegg += ` <td> -- %</td>`;
+      htmlmoveegg += ` 
+                  <td>${moveinfo.pp}</td>
+              </tr>`;
+    }
+  }
+  movelistegg.innerHTML = htmlmoveegg;
+  let length = document.querySelector('.js-movelistegg').rows.length;
+  if (length - 1 == 0) {
+    htmlmoveegg += `                <tr>
+    <td>--</td>
+    <td>--</td>
+    <td>--</td>
+    <td>--</td>
+    <td>--%</td>
+    <td>--</td>
+  </tr>`;
+    movelistegg.innerHTML = htmlmoveegg;
+  }
+  console.log('Egg Moves Loaded.' + length);
+};
+const ShowTmMoves = async function (Jsonmoves) {
   let htmlmovetm = '<tr><th>Move</th><th>Type</th><th>Cat.</th><th>Pwr.</th><th>Acc.</th><th>PP</th></tr>';
+
+  const pokeData = Jsonmoves;
+  // filter out moves that aren't in ultra-sun/ultra-moon
+  pokeData['moves'] = pokeData['moves'].filter((x) => x['version_group_details'].at(-1)['version_group']['name'] === 'ultra-sun-ultra-moon');
+  // sort moves based on level_learned_at (or first if egg)
+  // pokeData['moves'] = pokeData['moves'].sort((a, b) => {
+  //   let x = a['version_group_details'].at(-1); // select lastest version of move (ultra-sun/ultra-moon)
+  //   let y = b['version_group_details'].at(-1);
+  //   return x['move_learn_method']['name'] == 'egg' ? -1 : x['level_learned_at'] - y['level_learned_at'];
+  // });
+
+  for (const move of pokeData.moves) {
+    const MoveInfoUrl = `https://pokeapi.co/api/v2/move/${move.move.name}`;
+    const responsemoveinfo = await fetch(MoveInfoUrl); // Met de fetch API proberen we de data op te halen.
+    var moveinfo = await responsemoveinfo.json();
+    // get latest version of move (ultra-sun/ultra-moon)
+    let x = move['version_group_details'].at(-1);
+    if (x.move_learn_method.name == 'machine') {
+      htmlmovetm += `<tr class="c-move">
+                    <td class="c-move-name">${move.move.name}</td>
+                    <td class="c-type-${moveinfo.type.name}">${moveinfo.type.name}</td>
+                    <td class="js-damageClass c-${moveinfo.damage_class.name}">${moveinfo.damage_class.name}</td>
+                    `;
+      if (moveinfo.power != null) {
+        htmlmovetm += ` <td>${moveinfo.power}</td>`;
+      } else htmlmovetm += ` <td> -- </td>`;
+      if (moveinfo.accuracy != null) {
+        htmlmovetm += ` <td>${moveinfo.accuracy}%</td>`;
+      } else htmlmovetm += ` <td> -- %</td>`;
+      htmlmovetm += ` 
+                    <td>${moveinfo.pp}</td>
+                </tr>`;
+    }
+  }
+  movelisttm.innerHTML = htmlmovetm;
+  let length = document.querySelector('.js-movelisttm').rows.length;
+  if (length - 1 == 0) {
+    htmlmovetm += `                <tr>
+    <td>--</td>
+    <td>--</td>
+    <td>--</td>
+    <td>--</td>
+    <td>--%</td>
+    <td>--</td>
+  </tr>`;
+    movelisttm.innerHTML = htmlmovetm;
+  }
+  console.log('TM Moves Loaded.');
+};
+const ShowTutorMoves = async function (Jsonmoves) {
+  let htmlmovetutor = '<tr><th>Move</th><th>Type</th><th>Cat.</th><th>Pwr.</th><th>Acc.</th><th>PP</th></tr>';
+
+  const pokeData = Jsonmoves;
+  // filter out moves that aren't in ultra-sun/ultra-moon
+  pokeData['moves'] = pokeData['moves'].filter((x) => x['version_group_details'].at(-1)['version_group']['name'] === 'ultra-sun-ultra-moon');
+  // // sort moves based on level_learned_at (or first if egg)
+  // pokeData['moves'] = pokeData['moves'].sort((a, b) => {
+  //   let x = a['version_group_details'].at(-1); // select lastest version of move (ultra-sun/ultra-moon)
+  //   let y = b['version_group_details'].at(-1);
+  //   return x['move_learn_method']['name'] == 'egg' ? -1 : x['level_learned_at'] - y['level_learned_at'];
+  // });
+
+  for (const move of pokeData.moves) {
+    const MoveInfoUrl = `https://pokeapi.co/api/v2/move/${move.move.name}`;
+    const responsemoveinfo = await fetch(MoveInfoUrl); // Met de fetch API proberen we de data op te halen.
+    var moveinfo = await responsemoveinfo.json();
+    // get latest version of move (ultra-sun/ultra-moon)
+    let x = move['version_group_details'].at(-1);
+    if (x.move_learn_method.name == 'tutor') {
+      htmlmovetutor += `<tr class="c-move">
+                      <td class="c-move-name">${move.move.name}</td>
+                      <td class="c-type-${moveinfo.type.name}">${moveinfo.type.name}</td>
+                      <td class="js-damageClass c-${moveinfo.damage_class.name}">${moveinfo.damage_class.name}</td>
+                      `;
+      if (moveinfo.power != null) {
+        htmlmovetutor += ` <td>${moveinfo.power}</td>`;
+      } else htmlmovetutor += ` <td> -- </td>`;
+      if (moveinfo.accuracy != null) {
+        htmlmovetutor += ` <td>${moveinfo.accuracy}%</td>`;
+      } else htmlmovetutor += ` <td> -- %</td>`;
+      htmlmovetutor += ` 
+                      <td>${moveinfo.pp}</td>
+                  </tr>`;
+      // if (moveinfo.damage_class.name == 'physical') {
+      //   htmlmovetutor += `<td class="js-damageClass ${physicalClass}">${moveinfo.damage_class.name}</td>`;
+      // } else if (moveinfo.damage_class.name == 'special') {
+      //   htmlmovetutor += `<td class="js-damageClass ${specialClass}">${moveinfo.damage_class.name}</td>`;
+      // } else if (moveinfo.damage_class.name == 'status') {
+      //   htmlmovetutor += `<td class="js-damageClass ${statusClass}">${moveinfo.damage_class.name}</td>`;
+      // }
+    }
+  }
+  movelisttutor.innerHTML = htmlmovetutor;
+  let length = document.querySelector('.js-movelisttutor').rows.length;
+  if (length - 1 == 0) {
+    htmlmovetutor += `                <tr>
+    <td>--</td>
+    <td>--</td>
+    <td>--</td>
+    <td>--</td>
+    <td>--%</td>
+    <td>--</td>
+  </tr>`;
+    movelisttutor.innerHTML = htmlmovetutor;
+  }
+  console.log('Tutor Moves Loaded.');
+};
+const ShowLvlMoves = async function (Jsonmoves) {
+  let htmlmovelvl = `<tr><th>Level</th><th>Move</th><th>Type</th><th>Cat.</th><th>Pwr.</th><th>Acc.</th><th>PP</th></tr>`;
   const pokeData = Jsonmoves;
   // filter out moves that aren't in ultra-sun/ultra-moon
   pokeData['moves'] = pokeData['moves'].filter((x) => x['version_group_details'].at(-1)['version_group']['name'] === 'ultra-sun-ultra-moon');
@@ -245,105 +383,55 @@ const showPokémonMoves = async function (Jsonmoves) {
         htmlmovelvl += ` <td>${moveinfo.power}</td>`;
       } else htmlmovelvl += ` <td> -- </td>`;
       if (moveinfo.accuracy != null) {
-        htmlmovelvl += ` <td>${moveinfo.accuracy}</td>`;
-      } else htmlmovelvl += ` <td> -- </td>`;
+        htmlmovelvl += ` <td>${moveinfo.accuracy}%</td>`;
+      } else htmlmovelvl += ` <td> -- %</td>`;
       htmlmovelvl += ` 
                           <td>${moveinfo.pp}</td>
                       </tr>`;
     }
-
-    if (x.move_learn_method.name == 'egg') {
-      htmlmoveegg += `<tr class="c-move">
-                          <td class="c-move-name">${move.move.name}</td>
-                          <td class="c-type-${moveinfo.type.name}">${moveinfo.type.name}</td>
-                          <td class="js-damageClass c-${moveinfo.damage_class.name}">${moveinfo.damage_class.name}</td>
-                          `;
-      if (moveinfo.power != null) {
-        htmlmoveegg += ` <td>${moveinfo.power}</td>`;
-      } else htmlmoveegg += ` <td> -- </td>`;
-      if (moveinfo.accuracy != null) {
-        htmlmoveegg += ` <td>${moveinfo.accuracy}</td>`;
-      } else htmlmoveegg += ` <td> -- </td>`;
-      htmlmoveegg += ` 
-                          <td>${moveinfo.pp}</td>
-                      </tr>`;
-    }
-
-    if (x.move_learn_method.name == 'tutor') {
-      htmlmovetutor += `<tr class="c-move">
-                          <td class="c-move-name">${move.move.name}</td>
-                          <td class="c-type-${moveinfo.type.name}">${moveinfo.type.name}</td>
-                          <td class="js-damageClass c-${moveinfo.damage_class.name}">${moveinfo.damage_class.name}</td>
-                          `;
-      if (moveinfo.power != null) {
-        htmlmovetutor += ` <td>${moveinfo.power}</td>`;
-      } else htmlmovetutor += ` <td> -- </td>`;
-      if (moveinfo.accuracy != null) {
-        htmlmovetutor += ` <td>${moveinfo.accuracy}</td>`;
-      } else htmlmovetutor += ` <td> -- </td>`;
-      htmlmovetutor += ` 
-                          <td>${moveinfo.pp}</td>
-                      </tr>`;
-      // if (moveinfo.damage_class.name == 'physical') {
-      //   htmlmovetutor += `<td class="js-damageClass ${physicalClass}">${moveinfo.damage_class.name}</td>`;
-      // } else if (moveinfo.damage_class.name == 'special') {
-      //   htmlmovetutor += `<td class="js-damageClass ${specialClass}">${moveinfo.damage_class.name}</td>`;
-      // } else if (moveinfo.damage_class.name == 'status') {
-      //   htmlmovetutor += `<td class="js-damageClass ${statusClass}">${moveinfo.damage_class.name}</td>`;
-      // }
-    }
-    if (x.move_learn_method.name == 'machine') {
-      htmlmovetm += `<tr class="c-move">
-                        <td class="c-move-name">${move.move.name}</td>
-                        <td class="c-type-${moveinfo.type.name}">${moveinfo.type.name}</td>
-                        <td class="js-damageClass c-${moveinfo.damage_class.name}">${moveinfo.damage_class.name}</td>
-                        `;
-      if (moveinfo.power != null) {
-        htmlmovetm += ` <td>${moveinfo.power}</td>`;
-      } else htmlmovetm += ` <td> -- </td>`;
-      if (moveinfo.accuracy != null) {
-        htmlmovetm += ` <td>${moveinfo.accuracy}</td>`;
-      } else htmlmovetm += ` <td> -- </td>`;
-      htmlmovetm += ` 
-                        <td>${moveinfo.pp}</td>
-                    </tr>`;
-    }
   }
   movelistlvl.innerHTML = htmlmovelvl;
-  movelistegg.innerHTML = htmlmoveegg;
-  movelisttutor.innerHTML = htmlmovetutor;
-  movelisttm.innerHTML = htmlmovetm;
+  let length = document.querySelector('.js-movelistlevel').rows.length;
+  if (length - 1 == 0) {
+    htmlmovelvl += `                <tr>
+    <td>--</td>
+    <td>--</td>
+    <td>--</td>
+    <td>--</td>
+    <td>--%</td>
+    <td>--</td>
+  </tr>`;
+    movelistlvl.innerHTML = htmlmovelvl;
+  }
+  console.log('Level Moves Loaded.');
 };
 
 function SelectPokémon() {
   PokémonList.addEventListener('change', function () {
     getPokémon(this.value);
-    getMoves(this.value);
-    getStats(this.value);
   });
 }
 
 const ListenToClickNav = function () {
   NextPokémon.addEventListener('click', function () {
     number++;
-    console.log(number);
+    console.log('Current Pokémon Number:' + number);
     PokémonList.selectedIndex++;
+    console.log('Current Index Number:' + PokémonList.selectedIndex);
     getPokémon(number);
-    getMoves(number);
-    getStats(number);
-    gsap.fromTo('.c-next', { scale: 0.7 }, { scale: 1, ease: Elastic.easeOut, duration: 1 });
+
+    gsap.fromTo('.c-next', { scale: 0.7 }, { scale: 1, ease: Elastic.easeOut, duration: 2 });
   });
   PreviousPokémon.addEventListener('click', function () {
     if (number > 1) {
       number--;
-      console.log(number);
+      console.log('Current Pokémon Number:' + number);
       PokémonList.selectedIndex--;
+      console.log('Current Index Number:' + PokémonList.selectedIndex);
     }
-    gsap.fromTo('.c-back', { scale: 0.7 }, { scale: 1, ease: Elastic.easeOut, duration: 1 });
+    gsap.fromTo('.c-back', { scale: 0.7 }, { scale: 1, ease: Elastic.easeOut, duration: 2 });
 
     getPokémon(number);
-    getMoves(number);
-    getStats(number);
   });
 };
 
@@ -361,8 +449,6 @@ const init = function () {
   ListenToClickNav();
   getPokémon(1);
   SelectPokémon();
-  getMoves(1);
-  getStats(1);
   drawGraph();
   getAllPokémon();
 

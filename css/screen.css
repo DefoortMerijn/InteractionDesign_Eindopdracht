@@ -819,8 +819,6 @@ more padding on the right to avoid overlap
   width: 300px;
   height: 300px;
   padding: var(--global-whitespace-sm);
-  transition: ease-in-out 1s transform;
-  transform: scale(0.5) ;
 }
 
 .c-pokémon {
@@ -829,7 +827,7 @@ more padding on the right to avoid overlap
   font-weight: bold;
 }
 .c-pokémonimg {
-  background-image: url('/Images/ae9b8236d1bc09ae140c1acef6714a7b.jpg');
+  background-image: url('/Images/PB_background.jpg');
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
