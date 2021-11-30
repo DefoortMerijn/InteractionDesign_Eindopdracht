@@ -827,7 +827,7 @@ more padding on the right to avoid overlap
   font-weight: bold;
 }
 .c-pokémonimg {
-  background-image: url('/Images/PB_background.jpg');
+  background-image: url('./Images/PB_background.jpg');
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
