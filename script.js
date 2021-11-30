@@ -4,7 +4,7 @@ let number;
 
 const getAllPokémon = async () => {
   // Eerst bouwen we onze url op;
-  const endpoint = `https://pokeapi.co/api/v2/pokemon?offset=0&limit=898`;
+  const endpoint = `https://pokeapi.co/api/v2/pokemon?offset=0&limit=807`;
   await fetch(endpoint) // Met de fetch API proberen we de data op te halen.
     .then((response) => response.json())
     .then((data) => showPokémonList(data));
