@@ -6,13 +6,13 @@
   font-family: 'Pokemon Hollow';
   font-style: normal;
   font-weight: 400;
-  src: local('Pokemon Hollow'), url('https://fonts.cdnfonts.com/s/17911/Pokemon Hollow.woff') format('woff');
+  src: local('Pokemon Hollow'), url('../fonts/Pokemon Hollow.woff') format('woff');
 }
 @font-face {
   font-family: 'Pokemon Solid';
   font-style: normal;
   font-weight: 400;
-  src: local('Pokemon Solid'), url('https://fonts.cdnfonts.com/s/17911/Pokemon Solid.woff') format('woff');
+  src: local('Pokemon Solid'), url('../fonts/Pokemon Solid.woff') format('woff');
 }
 
 /*------------------------------------*\
@@ -817,7 +817,7 @@ more padding on the right to avoid overlap
 */
 
 .c-background {
-  background-image: url('/Images/OldSchoolPokémonBG.png');
+  background-image: url('../Images/OldSchoolPokémonBG.png');
   background-color: var(--global-background-Color);
   display: flex;
 
@@ -840,7 +840,7 @@ more padding on the right to avoid overlap
   font-weight: bold;
 }
 .c-pokémonimg {
-  background-image: url('/Images/PB_background.jpg');
+  background-image: url('../Images/PB_background.jpg');
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
