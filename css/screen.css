@@ -2,6 +2,19 @@
 #FONTS
 \*------------------------------------*/
 
+@font-face {
+  font-family: 'Pokemon Hollow';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Pokemon Hollow'), url('https://fonts.cdnfonts.com/s/17911/Pokemon Hollow.woff') format('woff');
+}
+@font-face {
+  font-family: 'Pokemon Solid';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Pokemon Solid'), url('https://fonts.cdnfonts.com/s/17911/Pokemon Solid.woff') format('woff');
+}
+
 /*------------------------------------*\
 #Variables
 \*------------------------------------*/
