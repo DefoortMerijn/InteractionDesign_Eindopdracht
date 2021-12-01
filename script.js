@@ -22,6 +22,9 @@ const showPokémon = function (jsonObject) {
   if (number >= 649) {
     NextPokémon.classList.add('c-nav__disepear');
   }
+  if (number < 649) {
+    NextPokémon.classList.remove('c-nav__disepear');
+  }
 
   console.log(jsonObject);
   const arr = jsonObject.name.split('');
