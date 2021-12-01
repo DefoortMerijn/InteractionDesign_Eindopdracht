@@ -846,12 +846,12 @@ more padding on the right to avoid overlap
   background-size: contain;
   background-position: top;
   background-repeat: no-repeat;
+  padding: var(--global-whitespace-lg);
 }
 
 .c-pokésprite {
-  width: 300px;
-  height: 300px;
-  padding: var(--global-whitespace-sm);
+  width: 200px;
+  height: 200px;
 }
 
 .c-pokémon {
@@ -868,11 +868,13 @@ more padding on the right to avoid overlap
   border-radius: 20px;
   border: 1px solid black;
   /* box-shadow: 0 5px 5px 2px rgba(0, 0, 0, 0.4); */
-  margin: 0 auto;
+  margin: 0 auto var(--global-whitespace-lg);
+  padding: var(--global-whitespace-lg);
   width: 300px;
   height: 300px;
-
-  margin-bottom: var(--global-whitespace-lg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 /* .c-movelist {
   display: flex;
@@ -1174,15 +1176,19 @@ table {
 .c-name p {
   margin: 0;
 }
-
-.c-dot {
-  width: 10px;
-  height: 10px;
-  position: absolute;
-  background-color: #00ff00;
-  border-radius: 20px;
-  z-index: 2;
+/* 
+.c-8bit {
+  fill: grey;
+  height: 20px;
 }
+
+.c-8bit:hover {
+  fill: darkgray;
+}
+
+.c-option--hidden:checked + .c-custom-option .c-8bit {
+  fill: red;
+} */
 /*------------------------------------*\
 #UTILITIES
 \*------------------------------------*/
