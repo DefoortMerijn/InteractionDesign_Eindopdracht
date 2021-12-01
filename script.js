@@ -508,7 +508,7 @@ const ListenToClickShiny = function (info) {
         repeat: 1,
         yoyo: true,
       });
-      tl.fromTo('.c-pokémon__sprite', { y: 0 }, { y: -30, ease: 'Power2.easeOut', duration: 0.5 }, '<');
+      tl.fromTo('.c-pokémon__sprite', { y: 0 }, { y: -30, ease: 'Power2.easeOut', duration: 0.2 }, '<');
 
       sprite.src = pokéimage;
       console.log('not checked');
@@ -521,7 +521,7 @@ const ListenToClickShiny = function (info) {
 
         yoyo: true,
       });
-      tl.fromTo('.c-pokémon__sprite', { y: 0 }, { y: -30, ease: 'Power2.easeOut', duration: 0.5 }, '<');
+      tl.fromTo('.c-pokémon__sprite', { y: 0 }, { y: -30, ease: 'Power2.easeOut', duration: 0.2 }, '<');
 
       sprite.src = pokéimageshiny;
       console.log('checked');
@@ -534,7 +534,7 @@ const ListenToClickShiny = function (info) {
 
         yoyo: true,
       });
-      tl.fromTo('.c-pokémon__sprite', { y: 0 }, { y: -30, ease: 'Power2.easeOut', duration: 0.5 }, '<');
+      tl.fromTo('.c-pokémon__sprite', { y: 0 }, { y: -30, ease: 'Power2.easeOut', duration: 0.2 }, '<');
 
       sprite.src = pokéimagepixel;
       console.log('checked');
@@ -547,7 +547,7 @@ const ListenToClickShiny = function (info) {
 
         yoyo: true,
       });
-      tl.fromTo('.c-pokémon__sprite', { y: 0 }, { y: -30, ease: 'Power2.easeOut', duration: 0.5 }, '<');
+      tl.fromTo('.c-pokémon__sprite', { y: 0 }, { y: -30, ease: 'Power2.easeOut', duration: 0.2 }, '<');
       console.log(pokéimagepixelshiny);
       sprite.src = pokéimagepixelshiny;
 
