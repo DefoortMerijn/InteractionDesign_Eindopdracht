@@ -1,3 +1,5 @@
+//#region ***  DOM references                           ***********
+
 let pokémonSprite, movelistlvl, movelistegg, movelisttutor, movelisttm, totBaseStats, PokémonList, PokémonType, NextPokémon, PreviousPokémon, ShinyToggle;
 let chart;
 let number;
@@ -5,35 +7,22 @@ let pokéimage;
 let pokéimageshiny;
 let pokéimagepixel;
 let pokéimagepixelshiny;
+//#endregion
 
-const getAllPokémon = async () => {
-  // Eerst bouwen we onze url op;
-  const endpoint = `https://pokeapi.co/api/v2/pokemon?offset=0&limit=649`;
-  await fetch(endpoint) // Met de fetch API proberen we de data op te halen.
-    .then((response) => response.json())
-    .then((data) => showPokémonList(data));
-  console.log('Sending data');
-};
-const getPokémon = async (pokemon) => {
-  // Eerst bouwen we onze url op
-  number = PokémonList.value;
-
-  const endpoint = `https://pokeapi.co/api/v2/pokemon/${pokemon}`;
-  await fetch(endpoint) // Met de fetch API proberen we de data op te halen.
-    .then((response) => response.json())
-    .then((data) => {
-      ShowEggMoves(data), ShowTutorMoves(data), ShowLvlMoves(data), ShowTmMoves(data), showPokémon(data), showPokémonStats(data);
-    });
-};
+//#region ***  Callback-Visualisation - show___         ***********
 const showPokémon = function (jsonObject) {
   pokéimage = jsonObject.sprites.other['home']['front_default'];
 
   if (number > 1) {
-    PreviousPokémon.classList.remove('c-disepear');
+    PreviousPokémon.classList.remove('c-nav__disepear');
   }
   if (number <= 1) {
-    PreviousPokémon.classList.add('c-disepear');
+    PreviousPokémon.classList.add('c-nav__disepear');
   }
+  if (number >= 649) {
+    NextPokémon.classList.add('c-nav__disepear');
+  }
+
   console.log(jsonObject);
   const arr = jsonObject.name.split('');
   for (var i = 0; i < arr.length; i++) {
@@ -53,21 +42,18 @@ const showPokémon = function (jsonObject) {
     <path d="M138.51,61.94a2.37,2.37,0,0,1,2.05,1.58A38.92,38.92,0,0,1,142.67,70a68.37,68.37,0,0,0,3.23,9.62,29.55,29.55,0,0,0,17.32,16.07c3.18,1.16,6.26,2.57,9.61,3.21.85.16,1.68.44,1.73,1.48a1.83,1.83,0,0,1-1.46,1.81c-2,.71-4.13,1.29-6.18,2a37.65,37.65,0,0,0-23.26,21.66,57.55,57.55,0,0,0-3.14,8.95,5,5,0,0,1-.43,1.08c-.33.64-.69,1.33-1.59,1.22s-1-.79-1.2-1.43c-1.45-4.13-2.47-8.41-4.46-12.35a35.2,35.2,0,0,0-14.54-15.55,85.52,85.52,0,0,0-13.8-6.15c-.9-.3-1.61-.86-1.51-1.93s.79-1.36,1.69-1.54c1.36-.27,2.7-.67,4.06-.94,10.28-2.11,17.31-8.26,22-17.47a85.18,85.18,0,0,0,5.68-15.45C136.7,63.11,137.12,62,138.51,61.94Z"/>
   </g>
   </svg>
-
-  </span>
-           
+  </span>     
 </div>
-
-<div class=" c-pokémonimg " id="image">
+<div class=" c-pokémon__img " id="image">
 <input class="o-hide-accessible c-option c-option--hidden js-shinyToggle" type="checkbox"
 id="checkbox2">
 <label class="c-label c-label--option c-custom-option" for="checkbox2">
 <span>
-<img class="c-pokésprite js-pokémonsprite " id ="sprite" src="${pokéimage}" alt="">
+<img class="c-pokémon__sprite js-pokémonsprite " id ="sprite" src="${pokéimage}" alt="">
 </span>
 </div>`;
   Pokémon.innerHTML = info;
-  gsap.fromTo('.c-pokésprite', { scale: 0.7 }, { scale: 1, ease: Elastic.easeOut, duration: 1 });
+  gsap.fromTo('.c-pokémon__sprite', { scale: 0.7 }, { scale: 1, ease: Elastic.easeOut, duration: 1 });
 
   ListenToClickShiny(jsonObject);
 
@@ -77,117 +63,6 @@ id="checkbox2">
     PokémonType.innerHTML = htmltypes;
   }
 };
-
-const ListenToClickShiny = function (info) {
-  console.log(pokémonSprite);
-
-  let checkbox2 = document.getElementById('checkbox2');
-  let checkbox1 = document.getElementById('checkbox1');
-  pokéimage = info.sprites.other['home']['front_default'];
-  pokéimageshiny = info.sprites.other['home']['front_shiny'];
-  pokéimagepixel = info.sprites.versions['generation-v']['black-white']['animated']['front_default'];
-  pokéimagepixelshiny = info.sprites.versions['generation-v']['black-white']['animated']['front_shiny'];
-  let sprite = document.getElementById('sprite');
-
-  document.querySelector('.js-pokémonsprite').addEventListener('click', function () {
-    console.log(checkbox2.checked);
-    console.log(checkbox1.checked);
-    if (checkbox2.checked == false && checkbox1.checked == false) {
-      sprite.src = pokéimagepixel;
-      console.log('click');
-      let tl = gsap.timeline({
-        repeat: 1,
-        yoyo: true,
-      });
-      tl.fromTo('.c-pokésprite', { x: 0 }, { x: -10, ease: 'Power2.easeOut', duration: 0.1 }, '<');
-      tl.fromTo('.c-pokésprite', { x: 0 }, { x: 10, ease: 'Power2.easeOut', duration: 0.1 }, '<');
-    }
-    if (checkbox2.checked == true && checkbox1.checked == false) {
-      sprite.src = pokéimage;
-      let tl = gsap.timeline({
-        repeat: 1,
-        yoyo: true,
-      });
-      tl.fromTo('.c-pokésprite', { x: 0 }, { x: -10, ease: 'Power2.easeOut', duration: 0.1 }, '<');
-      tl.fromTo('.c-pokésprite', { x: 0 }, { x: 10, ease: 'Power2.easeOut', duration: 0.1 }, '<');
-    }
-    if (checkbox2.checked == true && checkbox1.checked == true) {
-      sprite.src = pokéimageshiny;
-      let tl = gsap.timeline({
-        repeat: 1,
-        yoyo: true,
-      });
-      tl.fromTo('.c-pokésprite', { x: 0 }, { x: -10, ease: 'Power2.easeOut', duration: 0.1 }, '<');
-      tl.fromTo('.c-pokésprite', { x: 0 }, { x: 10, ease: 'Power2.easeOut', duration: 0.1 }, '<');
-    }
-    if (checkbox2.checked == false && checkbox1.checked == true) {
-      sprite.src = pokéimagepixelshiny;
-      let tl = gsap.timeline({
-        repeat: 1,
-        yoyo: true,
-      });
-      tl.fromTo('.c-pokésprite', { x: 0 }, { x: -10, ease: 'Power2.easeOut', duration: 0.1 }, '<');
-      tl.fromTo('.c-pokésprite', { x: 0 }, { x: 10, ease: 'Power2.easeOut', duration: 0.1 }, '<');
-    }
-  });
-
-  document.querySelector('.js-shiny').addEventListener('click', function () {
-    console.log(checkbox1.checked);
-    if (checkbox1.checked == true && checkbox2.checked == false) {
-      gsap.fromTo('.c-shiny', { scale: 0 }, { scale: 1, ease: Elastic.easeOut, duration: 1 });
-      let tl = gsap.timeline({
-        repeat: 1,
-        yoyo: true,
-      });
-      tl.fromTo('.c-pokésprite', { y: 0 }, { y: -30, ease: 'Power2.easeOut', duration: 0.5 }, '<');
-
-      sprite.src = pokéimage;
-      console.log('not checked');
-      console.log(sprite.src);
-    }
-    if (checkbox1.checked == false && checkbox2.checked == false) {
-      gsap.fromTo('.c-shiny', { scale: 0 }, { scale: 1, ease: Elastic.easeOut, duration: 1 });
-      let tl = gsap.timeline({
-        repeat: 1,
-
-        yoyo: true,
-      });
-      tl.fromTo('.c-pokésprite', { y: 0 }, { y: -30, ease: 'Power2.easeOut', duration: 0.5 }, '<');
-
-      sprite.src = pokéimageshiny;
-      console.log('checked');
-      console.log(sprite.src);
-    }
-    if (checkbox1.checked == true && checkbox2.checked == true) {
-      gsap.fromTo('.c-shiny', { scale: 0 }, { scale: 1, ease: Elastic.easeOut, duration: 1 });
-      let tl = gsap.timeline({
-        repeat: 1,
-
-        yoyo: true,
-      });
-      tl.fromTo('.c-pokésprite', { y: 0 }, { y: -30, ease: 'Power2.easeOut', duration: 0.5 }, '<');
-
-      sprite.src = pokéimagepixel;
-      console.log('checked');
-      console.log(sprite.src);
-    }
-    if (checkbox1.checked == false && checkbox2.checked == true) {
-      gsap.fromTo('.c-shiny', { scale: 0 }, { scale: 1, ease: Elastic.easeOut, duration: 1 });
-      let tl = gsap.timeline({
-        repeat: 1,
-
-        yoyo: true,
-      });
-      tl.fromTo('.c-pokésprite', { y: 0 }, { y: -30, ease: 'Power2.easeOut', duration: 0.5 }, '<');
-      console.log(pokéimagepixelshiny);
-      sprite.src = pokéimagepixelshiny;
-
-      console.log('checked');
-      console.log(sprite.src);
-    }
-  });
-};
-
 const showPokémonStats = function (jsonObject) {
   let status = '{"stats" : [';
   for (const stat of jsonObject.stats) {
@@ -216,7 +91,6 @@ const showPokémonStats = function (jsonObject) {
   totBaseStats.innerHTML = htmlbasestats;
   showBaseStats(statsJson);
 };
-
 const showBaseStats = function (data) {
   let converted_labels = [];
   let converted_data = [];
@@ -352,8 +226,8 @@ const ShowEggMoves = async function (Jsonmoves) {
     // get latest version of move (ultra-sun/ultra-moon)
     let x = move['version_group_details'].at(-1);
     if (x.move_learn_method.name == 'egg') {
-      htmlmoveegg += `<tr class="c-move">
-                  <td class="c-move-name">${move.move.name}</td>
+      htmlmoveegg += `<tr>
+                  <td>${move.move.name}</td>
                   <td class="c-type-${moveinfo.type.name}">${moveinfo.type.name}</td>
                   <td class="js-damageClass c-${moveinfo.damage_class.name}">${moveinfo.damage_class.name}</td>
                   `;
@@ -403,8 +277,8 @@ const ShowTmMoves = async function (Jsonmoves) {
     // get latest version of move (ultra-sun/ultra-moon)
     let x = move['version_group_details'].at(-1);
     if (x.move_learn_method.name == 'machine') {
-      htmlmovetm += `<tr class="c-move">
-                    <td class="c-move-name">${move.move.name}</td>
+      htmlmovetm += `<tr>
+                    <td>${move.move.name}</td>
                     <td class="c-type-${moveinfo.type.name}">${moveinfo.type.name}</td>
                     <td class="js-damageClass c-${moveinfo.damage_class.name}">${moveinfo.damage_class.name}</td>
                     `;
@@ -454,8 +328,8 @@ const ShowTutorMoves = async function (Jsonmoves) {
     // get latest version of move (ultra-sun/ultra-moon)
     let x = move['version_group_details'].at(-1);
     if (x.move_learn_method.name == 'tutor') {
-      htmlmovetutor += `<tr class="c-move">
-                      <td class="c-move-name">${move.move.name}</td>
+      htmlmovetutor += `<tr>
+                      <td>${move.move.name}</td>
                       <td class="c-type-${moveinfo.type.name}">${moveinfo.type.name}</td>
                       <td class="js-damageClass c-${moveinfo.damage_class.name}">${moveinfo.damage_class.name}</td>
                       `;
@@ -514,9 +388,9 @@ const ShowLvlMoves = async function (Jsonmoves) {
     if (x.move_learn_method.name == 'level-up') {
       htmlmovelvl += `
       
-      <tr class="c-move">
+      <tr>
                           <td>${x.level_learned_at}</td>
-                          <td class="c-move-name">${move.move.name}</td>
+                          <td>${move.move.name}</td>
                           <td class="c-type-${moveinfo.type.name}">${moveinfo.type.name}</td>
                           <td class="js-damageClass c-${moveinfo.damage_class.name}">${moveinfo.damage_class.name}</td>
                           `;
@@ -546,13 +420,144 @@ const ShowLvlMoves = async function (Jsonmoves) {
   }
   console.log('Level Moves Loaded.');
 };
+//#endregion
 
-function SelectPokémon() {
+//#region ***  Data Access - get___                     ***********
+const getAllPokémon = async () => {
+  // Eerst bouwen we onze url op;
+  const endpoint = `https://pokeapi.co/api/v2/pokemon?offset=0&limit=649`;
+  await fetch(endpoint) // Met de fetch API proberen we de data op te halen.
+    .then((response) => response.json())
+    .then((data) => showPokémonList(data));
+  console.log('Sending data');
+};
+const getPokémon = async (pokemon) => {
+  // Eerst bouwen we onze url op
+  number = PokémonList.value;
+
+  const endpoint = `https://pokeapi.co/api/v2/pokemon/${pokemon}`;
+  await fetch(endpoint) // Met de fetch API proberen we de data op te halen.
+    .then((response) => response.json())
+    .then((data) => {
+      ShowEggMoves(data), ShowTutorMoves(data), ShowLvlMoves(data), ShowTmMoves(data), showPokémon(data), showPokémonStats(data);
+    });
+};
+//#endregion
+//#region ***  Event Listeners - listenTo___            ***********
+const ListenToClickShiny = function (info) {
+  console.log(pokémonSprite);
+
+  let checkbox2 = document.getElementById('checkbox2');
+  let checkbox1 = document.getElementById('checkbox1');
+  pokéimage = info.sprites.other['home']['front_default'];
+  pokéimageshiny = info.sprites.other['home']['front_shiny'];
+  pokéimagepixel = info.sprites.versions['generation-v']['black-white']['animated']['front_default'];
+  pokéimagepixelshiny = info.sprites.versions['generation-v']['black-white']['animated']['front_shiny'];
+  let sprite = document.getElementById('sprite');
+
+  document.querySelector('.js-pokémonsprite').addEventListener('click', function () {
+    console.log(checkbox2.checked);
+    console.log(checkbox1.checked);
+    if (checkbox2.checked == false && checkbox1.checked == false) {
+      sprite.src = pokéimagepixel;
+      console.log('click');
+      let tl = gsap.timeline({
+        repeat: 1,
+        yoyo: true,
+      });
+      tl.fromTo('.c-pokémon__sprite', { x: 0 }, { x: -10, ease: 'Power2.easeOut', duration: 0.1 }, '<');
+      tl.fromTo('.c-pokémon__sprite', { x: 0 }, { x: 10, ease: 'Power2.easeOut', duration: 0.1 }, '<');
+    }
+    if (checkbox2.checked == true && checkbox1.checked == false) {
+      sprite.src = pokéimage;
+      let tl = gsap.timeline({
+        repeat: 1,
+        yoyo: true,
+      });
+      tl.fromTo('.c-pokémon__sprite', { x: 0 }, { x: -10, ease: 'Power2.easeOut', duration: 0.1 }, '<');
+      tl.fromTo('.c-pokémon__sprite', { x: 0 }, { x: 10, ease: 'Power2.easeOut', duration: 0.1 }, '<');
+    }
+    if (checkbox2.checked == true && checkbox1.checked == true) {
+      sprite.src = pokéimageshiny;
+      let tl = gsap.timeline({
+        repeat: 1,
+        yoyo: true,
+      });
+      tl.fromTo('.c-pokémon__sprite', { x: 0 }, { x: -10, ease: 'Power2.easeOut', duration: 0.1 }, '<');
+      tl.fromTo('.c-pokémon__sprite', { x: 0 }, { x: 10, ease: 'Power2.easeOut', duration: 0.1 }, '<');
+    }
+    if (checkbox2.checked == false && checkbox1.checked == true) {
+      sprite.src = pokéimagepixelshiny;
+      let tl = gsap.timeline({
+        repeat: 1,
+        yoyo: true,
+      });
+      tl.fromTo('.c-pokémon__sprite', { x: 0 }, { x: -10, ease: 'Power2.easeOut', duration: 0.1 }, '<');
+      tl.fromTo('.c-pokémon__sprite', { x: 0 }, { x: 10, ease: 'Power2.easeOut', duration: 0.1 }, '<');
+    }
+  });
+
+  document.querySelector('.js-shiny').addEventListener('click', function () {
+    console.log(checkbox1.checked);
+    if (checkbox1.checked == true && checkbox2.checked == false) {
+      gsap.fromTo('.c-shiny', { scale: 0 }, { scale: 1, ease: Elastic.easeOut, duration: 1 });
+      let tl = gsap.timeline({
+        repeat: 1,
+        yoyo: true,
+      });
+      tl.fromTo('.c-pokémon__sprite', { y: 0 }, { y: -30, ease: 'Power2.easeOut', duration: 0.5 }, '<');
+
+      sprite.src = pokéimage;
+      console.log('not checked');
+      console.log(sprite.src);
+    }
+    if (checkbox1.checked == false && checkbox2.checked == false) {
+      gsap.fromTo('.c-shiny', { scale: 0 }, { scale: 1, ease: Elastic.easeOut, duration: 1 });
+      let tl = gsap.timeline({
+        repeat: 1,
+
+        yoyo: true,
+      });
+      tl.fromTo('.c-pokémon__sprite', { y: 0 }, { y: -30, ease: 'Power2.easeOut', duration: 0.5 }, '<');
+
+      sprite.src = pokéimageshiny;
+      console.log('checked');
+      console.log(sprite.src);
+    }
+    if (checkbox1.checked == true && checkbox2.checked == true) {
+      gsap.fromTo('.c-shiny', { scale: 0 }, { scale: 1, ease: Elastic.easeOut, duration: 1 });
+      let tl = gsap.timeline({
+        repeat: 1,
+
+        yoyo: true,
+      });
+      tl.fromTo('.c-pokémon__sprite', { y: 0 }, { y: -30, ease: 'Power2.easeOut', duration: 0.5 }, '<');
+
+      sprite.src = pokéimagepixel;
+      console.log('checked');
+      console.log(sprite.src);
+    }
+    if (checkbox1.checked == false && checkbox2.checked == true) {
+      gsap.fromTo('.c-shiny', { scale: 0 }, { scale: 1, ease: Elastic.easeOut, duration: 1 });
+      let tl = gsap.timeline({
+        repeat: 1,
+
+        yoyo: true,
+      });
+      tl.fromTo('.c-pokémon__sprite', { y: 0 }, { y: -30, ease: 'Power2.easeOut', duration: 0.5 }, '<');
+      console.log(pokéimagepixelshiny);
+      sprite.src = pokéimagepixelshiny;
+
+      console.log('checked');
+      console.log(sprite.src);
+    }
+  });
+};
+const ListenToSelectPokémon = function () {
   PokémonList.addEventListener('change', function () {
     getPokémon(this.value);
   });
-}
-
+};
 const ListenToClickNav = function () {
   NextPokémon.addEventListener('click', function () {
     number++;
@@ -561,7 +566,7 @@ const ListenToClickNav = function () {
     console.log('Current Index Number:' + PokémonList.selectedIndex);
     getPokémon(number);
 
-    gsap.fromTo('.c-next', { scale: 0.7 }, { scale: 1, ease: Elastic.easeOut, duration: 1.5 });
+    gsap.fromTo('.c-nav__next', { scale: 0.7 }, { scale: 1, ease: Elastic.easeOut, duration: 1.5 });
   });
   PreviousPokémon.addEventListener('click', function () {
     if (number > 1) {
@@ -570,12 +575,14 @@ const ListenToClickNav = function () {
       PokémonList.selectedIndex--;
       console.log('Current Index Number:' + PokémonList.selectedIndex);
     }
-    gsap.fromTo('.c-back', { scale: 0.7 }, { scale: 1, ease: Elastic.easeOut, duration: 1.5 });
+    gsap.fromTo('.c-nav__back', { scale: 0.7 }, { scale: 1, ease: Elastic.easeOut, duration: 1.5 });
 
     getPokémon(number);
   });
 };
+//#endregion
 
+//#region ***  Init / DOMContentLoaded                  ***********
 const init = function () {
   Pokémon = document.querySelector('.js-pokémon');
   pokémonSprite = document.querySelector('.js-pokémonsprite');
@@ -591,10 +598,9 @@ const init = function () {
   ShinyToggle = document.querySelector('.js-shinyToggle');
   ListenToClickNav();
   getPokémon(1);
-  SelectPokémon();
+  ListenToSelectPokémon();
   drawGraph();
   getAllPokémon();
-
-  // SelectPokémonMoveMethod();
 };
 document.addEventListener('DOMContentLoaded', init);
+//#endregion

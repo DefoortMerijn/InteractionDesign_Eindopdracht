@@ -136,15 +136,11 @@ html {
 */
 
 ::-moz-selection {
-  background: var(--global-selection-backgroundColor);
-  color: white;
-  text-shadow: none;
+  background: transparent;
 }
 
 ::selection {
-  background: var(--global-selection-backgroundColor);
-  color: white;
-  text-shadow: none;
+  background: transparent;
 }
 
 /*------------------------------------*\
@@ -161,9 +157,6 @@ img {
   vertical-align: top;
 }
 
-body {
-  /* overflow-x: hidden; */
-}
 /*
     Elements: typography
     ---
@@ -300,6 +293,28 @@ details[open] summary ~ * {
   100% {
     opacity: 1;
   }
+}
+
+td {
+  background-color: white;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 5px 5px 2px rgba(0, 0, 0, 0.4);
+}
+
+th {
+  text-align: center;
+  border-radius: 20px;
+  background-color: var(--global-color-highlight);
+  box-shadow: 0 5px 5px 2px rgba(0, 0, 0, 0.4);
+}
+
+table {
+  width: 90%;
+  background-color: var(--global-background-Color);
+  border: 5px solid var(--global-background-Color);
+  border-radius: 20px;
+  box-shadow: 0 5px 10px 5px rgba(0, 0, 0, 0.4);
 }
 
 /*------------------------------------*\
@@ -625,21 +640,6 @@ details[open] summary ~ * {
 }
 
 /*
-Input password with toggle checkbox on top of it needs
-more padding on the right to avoid overlap
-*/
-
-.c-input--password-with-toggle {
-  padding-right: 52px;
-}
-
-/* option input for checkboxes and radio buttons */
-
-.c-option {
-  margin-right: var(--global-whitespace-sm);
-}
-
-/*
     Component: Label
     ---
     Class to put on all form labels
@@ -665,29 +665,18 @@ more padding on the right to avoid overlap
   color: var(--global-color-error);
   font-weight: bold;
 }
-/*
-    Component: Button
-    ---
-    Class to put on form buttons or
-*/
-
-/*
-    Component: Option list
-*/
-
-.c-option-list {
-  margin-bottom: var(--global-whitespace);
-}
-
-.c-option-list__item {
-  margin-bottom: calc(var(--global-whitespace) / 2);
-}
 
 /*
     Custom option
     ---
     Custom checkboxes & radio buttons
 */
+
+/* option input for checkboxes and radio buttons */
+
+.c-option {
+  margin-right: var(--global-whitespace-sm);
+}
 
 /* Hide the actual input with the class .o-hide-accessible */
 
@@ -711,105 +700,13 @@ more padding on the right to avoid overlap
 }
 
 /*
-    Component: Custom Toggle
-    ---
-    Visually change a checkbox into a toggle
-*/
-
-.c-custom-toggle-list {
-  --toggle-list-borderColor: var(--global-color-neutral-xxx-light);
-  margin-bottom: var(--global-whitespace);
-}
-
-.c-custom-toggle-list__item {
-  margin-bottom: calc(var(--global-whitespace) / 2);
-}
-
-.c-custom-toggle-list__item + .c-custom-toggle-list__item {
-  padding-top: calc(var(--global-whitespace) / 2);
-  border-top: 1px solid var(--toggle-list-borderColor);
-}
-
-.c-custom-toggle {
-  --toggle-backgroundColor: var(--global-color-neutral-xxxx-light);
-  --toggle-checked-borderColor: var(--global-color-alpha-dark);
-  --toggle-checked-backgroundColor: var(--global-color-alpha);
-  --toggle-focus-boxShadow: var(--global-input-focus-boxShadow);
-  --toggle__switch-backgroundColor: White;
-  --toggle__switch-checked-backgroundColor: White;
-  --toggle__switch-transition: all var(--global-transitionTiming-alpha);
-  display: flex;
-  align-items: center;
-}
-
-.c-custom-toggle--inverted {
-  flex-direction: row-reverse;
-  justify-content: space-between;
-}
-
-.c-custom-toggle__fake-input {
-  display: block;
-  height: 24px;
-  width: 48px;
-  margin-right: var(--global-whitespace-md);
-  background-color: var(--toggle-backgroundColor);
-  border-radius: 32px;
-  border: var(--global-borderWidth) solid var(--toggle-borderColor, var(--global-input-borderColor));
-  transition: all var(--global-transitionTiming-alpha);
-  box-shadow: var(--toggle-boxShadow, 0);
-}
-
-.c-custom-toggle--inverted .c-custom-toggle__fake-input {
-  margin-right: 0;
-}
-
-.c-custom-toggle__fake-input::after {
-  position: relative;
-  display: block;
-  content: '';
-  height: 22px;
-  width: 22px;
-  border-radius: 22px;
-  box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.2);
-  background-color: var(--toggle__switch-backgroundColor);
-  transition: var(--toggle__switch-transition);
-}
-
-/* focused and active state */
-
-.c-option--hidden:focus-visible + .c-custom-toggle {
-  --toggle-borderColor: var(--global-input-focus-borderColor);
-  --toggle-boxShadow: var(--toggle-focus-boxShadow);
-}
-
-/* checked state */
-
-.c-option--hidden:checked + .c-custom-toggle {
-  --toggle-backgroundColor: var(--toggle-checked-backgroundColor);
-  --toggle-borderColor: var(--toggle-checked-borderColor);
-  --toggle__switch-backgroundColor: var(--toggle__switch-checked-backgroundColor);
-}
-
-.c-option--hidden:checked + .c-custom-toggle .c-custom-toggle__fake-input::after {
-  transform: translate(24px, 0);
-}
-
-/* special active state */
-
-.c-custom-toggle:active .c-custom-toggle__fake-input::after {
-  width: 28px;
-}
-
-.c-option--hidden:checked + .c-custom-toggle:active .c-custom-toggle__fake-input::after {
-  margin-left: -6px;
-}
-
-/*
-    Component: Custom Select
+    Component: (Custom) Select
     ---
     Custom select dropdown
 */
-
+.c-select {
+  margin-bottom: var(--global-whitespace);
+}
 .c-custom-select {
   display: block;
   position: relative;
@@ -818,16 +715,6 @@ more padding on the right to avoid overlap
 
 .c-custom-select__input {
   font-weight: bold;
-}
-/*
-    Component: Password Toggle
-    ---
-    Password toggle custom checkbox
-*/
-
-.c-toggle-password-container {
-  display: block;
-  position: relative;
 }
 
 /*
@@ -849,17 +736,22 @@ more padding on the right to avoid overlap
   padding: var(--global-whitespace-lg);
 }
 
-.c-pokésprite {
-  width: 200px;
-  height: 200px;
-}
-
+/*
+  Component: Pokémon
+  ---
+  main styling of the pokémon main info
+*/
 .c-pokémon {
   text-align: center;
   font-size: 32px;
   font-weight: bold;
 }
-.c-pokémonimg {
+
+.c-pokémon__sprite {
+  height: 10rem;
+}
+
+.c-pokémon__img {
   background-image: url('../Images/PB_background.jpg');
   background-position: center;
   background-repeat: no-repeat;
@@ -876,56 +768,30 @@ more padding on the right to avoid overlap
   justify-content: center;
   align-items: center;
 }
-/* .c-movelist {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-} */
 
-/* .c-move {
-  display: flex;
-  justify-content: space-between;
-  border: 1px solid black;
-  padding: 6px;
-  background-color: white;
-  margin: 0 auto;
-}
-td {
-  border: 1px solid black;
-  width: px;
-} */
-td {
-  background-color: white;
-  border-radius: 20px;
-  text-align: center;
-  box-shadow: 0 5px 5px 2px rgba(0, 0, 0, 0.4);
-}
-
-th {
-  text-align: center;
-  border-radius: 20px;
-  background-color: var(--global-color-highlight);
-  box-shadow: 0 5px 5px 2px rgba(0, 0, 0, 0.4);
-}
-
-table {
-  width: 90%;
-  background-color: var(--global-background-Color);
-  border: 5px solid var(--global-background-Color);
-  border-radius: 20px;
-  box-shadow: 0 5px 10px 5px rgba(0, 0, 0, 0.4);
-}
-
+/*
+  Component: Title
+  ---
+  Styling of titles
+*/
 .c-title {
   margin: 2rem auto;
   padding: 1rem 0;
   text-align: center;
   font-size: 3rem;
 }
-.c-select {
-  margin-bottom: var(--global-whitespace);
+.c-maintitle {
+  font-size: 5rem;
+  margin-bottom: 48px;
+  line-height: 82px;
+  font-family: 'Pokemon Hollow', sans-serif;
 }
 
+/*
+  Component: Grid
+  ---
+  Grid styling
+*/
 .c-grid {
   display: grid;
   grid-template-columns: 43rem 43rem;
@@ -976,12 +842,23 @@ table {
   padding: var(--global-whitespace-lg);
 }
 
+/*
+  Component: page
+  ---
+  makes the other components look good 
+*/
 .c-page {
   padding: 7% 0;
   margin-top: 10%;
   width: 100vw;
 }
 
+/*
+  Component: LearnSet
+  ---
+  Styling for the learnsets
+
+*/
 .c-learnset {
   font-size: 16px;
   text-align: left;
@@ -990,12 +867,11 @@ table {
   margin-top: 20px;
 }
 
-.c-maintitle {
-  font-size: 5rem;
-  margin-bottom: 48px;
-  line-height: 82px;
-  font-family: 'Pokemon Hollow', sans-serif;
-}
+/*
+  Component: Stats
+  ---
+  styling for stats
+*/
 .c-totstats {
   background-color: var(--global-background-Color);
   width: 100%;
@@ -1006,6 +882,11 @@ table {
   color: var(--global-font-color);
 }
 
+/*
+  Component: DamageClass
+  ---
+  Coloring for each damageclass
+*/
 .c-special {
   background-color: #007580;
   color: white;
@@ -1023,8 +904,10 @@ table {
 
 /*
   Component: Types
+  ---
   A component that gives types a color
 */
+
 .c-types {
   display: flex;
   gap: 5px;
@@ -1111,28 +994,22 @@ table {
   color: var(--global-font-color);
 }
 
-/* .c-loading {
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-content: center;
-  position: absolute;
-  top: 0;
-  left: 0;
-  background-color: #d8ebe4;
-} */
+/*
+  Component: Navigation
+  ---
+  Components for the navigation
+*/
 .c-nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding-bottom: 24px;
 }
-.c-disepear {
+.c-nav__disepear {
   visibility: hidden;
 }
 
-.c-back {
+.c-nav__back {
   fill: var(--global-color-highlight);
   background-color: var(--global-background-Color);
   border-radius: 50%;
@@ -1140,13 +1017,19 @@ table {
   height: auto;
 }
 
-.c-next {
+.c-nav__next {
   fill: var(--global-color-highlight);
   background-color: var(--global-background-Color);
   border-radius: 50%;
   width: 40px;
   height: 40px;
 }
+
+/*
+  Component: Shiny
+  ---
+  Component for the shiny toggle button
+*/
 
 .c-shiny {
   height: 48px;
@@ -1166,6 +1049,13 @@ table {
 .c-option--hidden:checked + .c-custom-option .c-shinySparkle {
   fill: var(--global-color-highlight);
 }
+
+/*
+  Component: Name
+  ---
+  Component that aligns the name 
+*/
+
 .c-name {
   display: flex;
   justify-content: center;
@@ -1176,19 +1066,7 @@ table {
 .c-name p {
   margin: 0;
 }
-/* 
-.c-8bit {
-  fill: grey;
-  height: 20px;
-}
 
-.c-8bit:hover {
-  fill: darkgray;
-}
-
-.c-option--hidden:checked + .c-custom-option .c-8bit {
-  fill: red;
-} */
 /*------------------------------------*\
 #UTILITIES
 \*------------------------------------*/
