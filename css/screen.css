@@ -15,6 +15,26 @@
   src: local('Pokemon Solid'), url('../fonts/Pokemon Solid.woff') format('woff');
 }
 
+@font-face {
+  font-family: 'Asap', Arial, Helvetica, sans-serif;
+  font-style: bold;
+  font-weight: 600;
+  src: url('../fonts/asap-bold.woff') format('woff');
+  src: url('../fonts/asap-bold.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Asap', Arial, Helvetica, sans-serif;
+  font-style: medium;
+  src: url('../fonts/asap-Medium.woff') format('woff');
+  src: url('../fonts/asap-Medium.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Asap', Arial, Helvetica, sans-serif;
+  font-style: normal;
+  src: url('../fonts/asap-regular.woff') format('woff');
+  src: url('../fonts/asap-regular.woff2') format('woff2');
+}
 /*------------------------------------*\
 #Variables
 \*------------------------------------*/
@@ -96,7 +116,7 @@ html {
   color: var(--global-font-color);
   font-size: 16px;
   line-height: 1.5;
-  font-family: 'Inter Web', Helvetica, arial, sans-serif;
+  font-family: 'Asap', Helvetica, arial, sans-serif;
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
