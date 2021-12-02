@@ -1157,6 +1157,9 @@ table {
     margin: var(--global-whitespace-sm);
     font-size: 2rem;
   }
+  .c-maintitle {
+    font-size: 3.5rem;
+  }
 }
 
 /*------------------------------------*\
