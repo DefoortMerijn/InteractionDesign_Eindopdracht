@@ -76,7 +76,14 @@ const showPokémonStats = function (jsonObject) {
     const base_stat = stat['stat']['name'].charAt(0).toUpperCase() + stat['stat']['name'].slice(1);
     if (stat['stat']['name'] == 'speed') {
       status += `{"name": "${base_stat}", "stat":"${stat['base_stat']}"}`;
-    } else {
+    }
+    if (stat['stat']['name'] == 'special-attack') {
+      status += `{"name": "Sp-Atk", "stat":"${stat['base_stat']}"},`;
+    }
+    if (stat['stat']['name'] == 'special-defense') {
+      status += `{"name": "Sp-Def", "stat":"${stat['base_stat']}"},`;
+    }
+    if (stat['stat']['name'] == 'hp' || stat['stat']['name'] == 'attack' || stat['stat']['name'] == 'defense') {
       status += `{"name": "${base_stat}", "stat":"${stat['base_stat']}"},`;
     }
   }
@@ -114,10 +121,58 @@ const drawBaseStats = function (labels, data) {
         data: data,
       },
     ],
+    responsive: [
+      {
+        breakpoint: 450,
+        options: {
+          chart: {
+            type: 'bar',
+            background: '#FFFFFF',
+            height: 250,
+          },
+          yaxis: {
+            labels: {
+              show: true,
+              style: {
+                fontSize: '9px',
+                fontWeight: 'bold',
+                colors: ['#000000'],
+              },
+            },
+          },
+          dataLabels: {
+            enabled: true,
+            offsetX: 20,
+
+            textAnchor: 'middle',
+            style: {
+              fontSize: '9px',
+              fontWeight: 'bold',
+              colors: ['#000000'],
+            },
+          },
+        },
+      },
+    ],
     chart: {
       type: 'bar',
-      height: 350,
+      toolbar: {
+        show: false,
+      },
       background: '#FFFFFF',
+      animations: {
+        enabled: true,
+        easing: 'easeinout',
+        speed: 600,
+        animateGradually: {
+          enabled: true,
+          delay: 100,
+        },
+        dynamicAnimation: {
+          enabled: true,
+          speed: 250,
+        },
+      },
     },
     plotOptions: {
       bar: {
@@ -132,7 +187,7 @@ const drawBaseStats = function (labels, data) {
     colors: ['#FF0000', '#F08030', '#F8D030', '#6890F0', '#78C850', '#F85888'],
     dataLabels: {
       enabled: true,
-      offsetX: 20,
+      offsetX: 30,
       textAnchor: 'middle',
       style: {
         fontWeight: 'bold',
