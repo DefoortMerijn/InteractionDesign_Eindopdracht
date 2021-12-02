@@ -1,6 +1,6 @@
 //#region ***  DOM references                           ***********
 
-let pokémonSprite, movelistlvl, movelistegg, movelisttutor, movelisttm, totBaseStats, PokémonList, PokémonType, NextPokémon, PreviousPokémon, ShinyToggle;
+let pokémonSprite, PokémonListOption, movelistlvl, movelistegg, movelisttutor, movelisttm, totBaseStats, PokémonList, PokémonType, NextPokémon, PreviousPokémon, ShinyToggle;
 let chart;
 let number;
 let pokéimage;
@@ -11,6 +11,8 @@ let pokéimagepixelshiny;
 
 //#region ***  Callback-Visualisation - show___         ***********
 const showPokémon = function (jsonObject) {
+  // gsap.to('.c-custom-select__symbol', { rotation: 0, ease: 'Power2.easeOut', duration: 0.5 });
+
   pokéimage = jsonObject.sprites.other['home']['front_default'];
 
   if (number > 1) {
@@ -128,7 +130,7 @@ const drawBaseStats = function (labels, data) {
           chart: {
             type: 'bar',
             background: '#FFFFFF',
-            height: 250,
+            height: 200,
           },
           yaxis: {
             labels: {
@@ -249,19 +251,22 @@ const showPokémonList = function (data) {
     }
     const name = pokémon.name.charAt(0).toUpperCase() + pokémon.name.slice(1);
     if (index.toString().length == 1) {
-      htmlList += ` <option value="${optionvalue}">00${index}: ${name}</option>`;
+      htmlList += ` <option class="js-option" value="${optionvalue}">00${index}: ${name}</option>`;
     }
     if (index.toString().length == 2) {
-      htmlList += ` <option value="${optionvalue}">0${index}: ${name}</option>`;
+      htmlList += ` <option class="js-option" value="${optionvalue}">0${index}: ${name}</option>`;
     }
     if (index.toString().length == 3) {
-      htmlList += ` <option value="${optionvalue}">${index}: ${name}</option>`;
+      htmlList += ` <option class="js-option" value="${optionvalue}">${index}: ${name}</option>`;
     }
     optionvalue++;
     index++;
   }
 
   PokémonList.innerHTML = htmlList;
+  // PokémonList.addEventListener('click', function () {
+  //   gsap.to('.c-custom-select__symbol', { rotation: 180, ease: 'Power2.easeOut', duration: 0.5 });
+  // });
 };
 
 const ShowEggMoves = async function (Jsonmoves) {
@@ -650,6 +655,7 @@ const init = function () {
   movelisttm = document.querySelector('.js-movelisttm');
   totBaseStats = document.querySelector('.js-totstats');
   PokémonList = document.querySelector('.js-select');
+  PokémonListOption = document.getElementsByTagName('option');
   PokémonType = document.querySelector('.js-types');
   NextPokémon = document.querySelector('.js-next');
   PreviousPokémon = document.querySelector('.js-back');

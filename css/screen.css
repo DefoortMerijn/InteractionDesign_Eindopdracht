@@ -615,6 +615,9 @@ table {
 */
 
 .c-input {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
   width: 100%;
   border: var(--global-borderWidth) solid var(--input-borderColor, var(--global-input-borderColor));
   /* border: 1px solid var(--global-color-neutral-xxx-light); */
@@ -710,15 +713,24 @@ table {
 .c-custom-select {
   display: flex;
   justify-content: center;
-  align-items: c;
+  align-items: center;
   position: relative;
   width: 100%;
 }
 
 .c-custom-select__input {
   font-weight: bold;
+  border-color: var(--global-color-neutral-x-light);
 }
+.c-custom-select__symbol {
+  width: var(--global-whitespace);
+  height: var(--global-whitespace);
+  position: absolute;
 
+  right: calc(var(--global-whitespace) / 2);
+  pointer-events: none;
+  fill: var(--global-color-neutral-xxxx-dark);
+}
 /*
   Component: Background
   ---
@@ -750,7 +762,7 @@ table {
 }
 
 .c-pokémon__sprite {
-  height: 10rem;
+  height: 12rem;
 }
 
 .c-pokémon__img {
@@ -912,7 +924,7 @@ table {
 }
 
 .c-type {
-  width: 20vw;
+  width: 20rem;
   border-radius: 20px;
   font-size: 24px;
 }
@@ -1105,6 +1117,7 @@ table {
   .c-input {
     font-size: 0.75rem;
     height: 2rem;
+    line-height: 1rem;
     padding: var(--global-whitespace-sm);
   }
 
