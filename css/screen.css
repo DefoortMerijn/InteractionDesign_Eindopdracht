@@ -602,12 +602,6 @@ table {
   align-items: center;
 }
 
-.c-form-field:focus-within .c-label-floating {
-  transform: translateY(-24px);
-}
-.c-form-field .c-is-floating {
-  transform: translateY(-24px);
-}
 /*
     Component: Input
     ---
@@ -621,11 +615,11 @@ table {
   width: 100%;
   border: var(--global-borderWidth) solid var(--input-borderColor, var(--global-input-borderColor));
   /* border: 1px solid var(--global-color-neutral-xxx-light); */
-  border-radius: 100px;
+  border-radius: 5rem;
   background-color: var(--global-input-backgroundColor);
   color: var(--global-input-color), var(--global-color-neutral-xx-dark);
   font-family: inherit;
-  font-size: 16px;
+  font-size: 1rem;
   line-height: calc(var(--global-baseline) * 3);
   padding: calc(var(--global-baseline) * 1.5 - var(--global-borderWidth)) var(--global-whitespace-md);
   outline: none;
@@ -655,8 +649,8 @@ table {
   --label-color: var(--global-color-neutral-xx-dark);
   margin-bottom: 0;
   padding-bottom: var(--global-whitespace-sm);
-  font-size: 14px;
-  line-height: 16px;
+  font-size: 0.75rem;
+  line-height: 1rem;
   color: var(--label-color, var(--global-color-neutral-xx-dark));
 }
 
@@ -757,12 +751,13 @@ table {
 */
 .c-pokémon {
   text-align: center;
-  font-size: 32px;
+  font-size: 2rem;
   font-weight: bold;
 }
 
 .c-pokémon__sprite {
-  height: 12rem;
+  height: 12.5rem;
+  width: auto;
 }
 
 .c-pokémon__img {
@@ -776,8 +771,8 @@ table {
   /* box-shadow: 0 5px 5px 2px rgba(0, 0, 0, 0.4); */
   margin: 0 auto var(--global-whitespace-lg);
   /* padding: var(--global-whitespace-lg); */
-  width: 300px;
-  height: 300px;
+  width: 18rem;
+  height: 18rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -796,8 +791,8 @@ table {
 }
 .c-maintitle {
   font-size: 5rem;
-  margin-bottom: 48px;
-  line-height: 82px;
+  margin-bottom: 3rem;
+  line-height: 5rem;
   font-family: 'Pokemon Hollow', sans-serif;
 }
 
@@ -820,9 +815,7 @@ table {
   background-color: white;
   border-radius: 5px;
   justify-self: center;
-  align-self: flex-start;
-  font-size: 30px;
-  text-align: center;
+  font-size: 2rem;
   width: 43rem;
   min-height: 35rem;
   height: auto;
@@ -834,16 +827,14 @@ table {
 .c-grid__item-long {
   background-color: white;
   border-radius: 5px;
-  font-size: 30px;
-  margin: 0;
-  min-height: 35rem;
-
-  width: 43rem;
   justify-self: center;
+  font-size: 2rem;
+  width: 43rem;
+  min-height: 35rem;
   height: auto;
-  box-shadow: 0 5px 10px 5px rgba(0, 0, 0, 0.4);
-
   color: #000;
+  box-shadow: 0 5px 10px 5px rgba(0, 0, 0, 0.4);
+  margin: 0;
 }
 
 .c-grid__content {
@@ -868,11 +859,11 @@ table {
 
 */
 .c-learnset {
-  font-size: 16px;
+  font-size: 1rem;
   text-align: left;
   display: flex;
   justify-content: center;
-  margin-top: 20px;
+  margin-top: 1.25rem;
 }
 
 /*
@@ -883,7 +874,7 @@ table {
 .c-totstats {
   background-color: var(--global-background-Color);
   width: 100%;
-  height: 60px;
+  height: 4rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -918,7 +909,7 @@ table {
 
 .c-types {
   display: flex;
-  gap: 5px;
+  gap: 0.5rem;
   justify-content: center;
   align-items: center;
 }
@@ -926,7 +917,7 @@ table {
 .c-type {
   width: 20rem;
   border-radius: 20px;
-  font-size: 24px;
+  font-size: 1.5rem;
 }
 
 .c-type-fire {
@@ -1040,8 +1031,8 @@ table {
 */
 
 .c-shiny {
-  height: 48px;
-  width: 48px;
+  height: 3rem;
+  width: 3rem;
   border-radius: 50%;
   border: 1px solid transparent;
 }
